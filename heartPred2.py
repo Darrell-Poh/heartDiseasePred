@@ -16,7 +16,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": None,
    "id": "77acaca8-c323-48aa-8df5-2ec555409600",
    "metadata": {},
    "outputs": [],
@@ -26,7 +26,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": None,
    "id": "e7e15926-5d61-43c3-8900-8a1c96f8f913",
    "metadata": {},
    "outputs": [],
@@ -578,7 +578,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": None,
    "id": "3afc9065-db32-46c1-9fff-75b8d117287f",
    "metadata": {},
    "outputs": [],
