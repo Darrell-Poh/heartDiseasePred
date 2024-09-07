@@ -16,26 +16,6 @@
   },
   {
    "cell_type": "code",
-   "execution_count": null,
-   "id": "77acaca8-c323-48aa-8df5-2ec555409600",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "pip install streamlit pandas numpy scikit-learn"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "e7e15926-5d61-43c3-8900-8a1c96f8f913",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "pip freeze > requirements.txt"
-   ]
-  },
-  {
-   "cell_type": "code",
    "execution_count": 3,
    "id": "54bdf361-daa2-4862-a886-b96cc3f280e7",
    "metadata": {},
