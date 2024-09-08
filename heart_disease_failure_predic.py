@@ -77,9 +77,8 @@ def predict_and_display(data):
     st.write(f"The predicted outcome is: **{'Heart Disease' if predictions[0] == 1 else 'No Heart Disease'}**")
     
     # Plot histogram of predictions (if desired)
-    #st.write("Histogram of Predictions:")
-   # fig, ax = plt.subplots()
-    #prediction_counts = pd.Series(predictions).value_counts().sort_index()
+    #fig, ax = plt.subplots()
+   # prediction_counts = pd.Series(predictions).value_counts().sort_index()
     #prediction_counts.plot(kind='bar', ax=ax)
     #ax.set_title("Number of Heart Disease Predictions")
     #ax.set_xlabel("Prediction")
@@ -93,18 +92,18 @@ def main():
 
     # Manually input the features
     age = st.number_input("Age", min_value=0, max_value=120, value=50)
-    sex = st.selectbox("Sex", options=["Male", "Female"])
-    cp = st.selectbox("Chest Pain Type", options=["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"])
+    sex = st.selectbox("Sex", options=["Male", "Female"], index=0)
+    cp = st.selectbox("Chest Pain Type", options=["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"], index=0)
     trestbps = st.number_input("Resting Blood Pressure", min_value=80, max_value=200, value=120)
     chol = st.number_input("Serum Cholesterol (mg/dl)", min_value=100, max_value=400, value=200)
-    fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=["True", "False"])
-    restecg = st.selectbox("Resting Electrocardiographic Results", options=["Normal", "ST-T Wave Abnormality", "Left Ventricular Hypertrophy"])
+    fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=["True", "False"], index=1)
+    restecg = st.selectbox("Resting Electrocardiographic Results", options=["Normal", "ST-T Wave Abnormality", "Left Ventricular Hypertrophy"], index=0)
     thalach = st.number_input("Maximum Heart Rate Achieved", min_value=60, max_value=220, value=150)
-    exang = st.selectbox("Exercise Induced Angina", options=["Yes", "No"])
+    exang = st.selectbox("Exercise Induced Angina", options=["Yes", "No"], index=1)
     oldpeak = st.number_input("ST Depression Induced by Exercise", min_value=0.0, max_value=6.0, step=0.1, value=1.0)
-    slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"])
+    slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"], index=0)
     ca = st.number_input("Number of Major Vessels Colored by Fluoroscopy", min_value=0, max_value=3, value=0)
-    thal = st.selectbox("Thalassemia", options=["Normal", "Fixed Defect", "Reversible Defect"])
+    thal = st.selectbox("Thalassemia", options=["Normal", "Fixed Defect", "Reversible Defect"], index=0)
 
     # Gather input data into a dictionary
     input_data = {
