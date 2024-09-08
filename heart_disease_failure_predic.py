@@ -54,6 +54,10 @@ def predict_and_display(data):
     # Preprocess the input data
     processed_data = preprocess_input(data)
     
+    # Verify that the features match what the model expects
+    model_expected_features = naive_bayes_model.feature_names_in_
+    processed_data = processed_data[model_expected_features]
+    
     # Predict using the loaded model
     predictions = naive_bayes_model.predict(processed_data)
     
