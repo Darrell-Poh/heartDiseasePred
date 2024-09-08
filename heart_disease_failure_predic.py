@@ -9,7 +9,7 @@ import seaborn as sns
 # Load the pre-trained model
 naive_bayes_model = load('naive_bayes_model.joblib')
 
-# Get the feature names expected by the model
+# Ensure the model expects certain features
 expected_features = naive_bayes_model.feature_names_in_
 
 def preprocess_input(data):
@@ -51,10 +51,12 @@ def preprocess_input(data):
         'age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
         'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'
     ])
-    
-    # Handle missing values using SimpleImputer (mean strategy)
-    imputer = SimpleImputer(strategy='mean')
-    processed_data = pd.DataFrame(imputer.fit_transform(processed_data), columns=processed_data.columns)
+
+    # Check and handle any NaN values
+    if processed_data.isnull().values.any():
+        st.warning("Some inputs were missing and have been filled with default values.")
+        imputer = SimpleImputer(strategy='mean')
+        processed_data = pd.DataFrame(imputer.fit_transform(processed_data), columns=processed_data.columns)
 
     return processed_data
 
@@ -76,14 +78,15 @@ def predict_and_display(data):
     st.header("Prediction Results")
     st.write(f"The predicted outcome is: **{'Heart Disease' if predictions[0] == 1 else 'No Heart Disease'}**")
     
-    # Plot histogram of predictions (if desired)
-    #fig, ax = plt.subplots()
-   # prediction_counts = pd.Series(predictions).value_counts().sort_index()
-    #prediction_counts.plot(kind='bar', ax=ax)
-    #ax.set_title("Number of Heart Disease Predictions")
-    #ax.set_xlabel("Prediction")
-    #ax.set_ylabel("Count")
-    #st.pyplot(fig)
+    # Plot histogram of predictions
+    st.write("Histogram of Predictions:")
+    fig, ax = plt.subplots()
+    prediction_counts = pd.Series(predictions).value_counts().sort_index()
+    prediction_counts.plot(kind='bar', ax=ax)
+    ax.set_title("Number of Heart Disease Predictions")
+    ax.set_xlabel("Prediction")
+    ax.set_ylabel("Count")
+    st.pyplot(fig)
 
 def main():
     st.title("Heart Disease Prediction App - Naive Bayes")
