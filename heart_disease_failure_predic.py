@@ -1,93 +1,76 @@
-import streamlit as st
 import pandas as pd
 import numpy as np
+import streamlit as st
 from joblib import load
-from sklearn.preprocessing import LabelEncoder
 
-# Load the pre-trained Naive Bayes model
+# Load the trained model and label encoders
 naive_bayes_model = load('naive_bayes_model.joblib')
+label_encoders = load('label_encoders.joblib')
 
-# Load label encoders
-label_encoders = {
-    'Sex': LabelEncoder(),
-    'ChestPainType': LabelEncoder(),
-    'RestingECG': LabelEncoder(),
-    'ExerciseAngina': LabelEncoder(),
-    'ST_Slope': LabelEncoder()
-}
-
-# Define categorical mappings for prediction
-label_encoders['Sex'].classes_ = np.array(['Female', 'Male'])
-label_encoders['ChestPainType'].classes_ = np.array(['Asymptomatic', 'Atypical Angina', 'Non-anginal Pain', 'Typical Angina'])
-label_encoders['RestingECG'].classes_ = np.array(['Left Ventricular Hypertrophy', 'Normal', 'ST-T Wave Abnormality'])
-label_encoders['ExerciseAngina'].classes_ = np.array(['No', 'Yes'])
-label_encoders['ST_Slope'].classes_ = np.array(['Downsloping', 'Flat', 'Upsloping'])
+# Define the feature names
+model_expected_features = ['Age', 'Sex', 'ChestPainType', 'RestingBP', 'Cholesterol', 'FastingBS', 
+                            'RestingECG', 'MaxHR', 'ExerciseAngina', 'Oldpeak', 'ST_Slope']
 
 def preprocess_input(data):
-    # Convert categorical inputs to numerical values
-    data['Sex'] = label_encoders['Sex'].transform([data['Sex']])[0]
-    data['ChestPainType'] = label_encoders['ChestPainType'].transform([data['ChestPainType']])[0]
-    data['RestingECG'] = label_encoders['RestingECG'].transform([data['RestingECG']])[0]
-    data['ExerciseAngina'] = label_encoders['ExerciseAngina'].transform([data['ExerciseAngina']])[0]
-    data['ST_Slope'] = label_encoders['ST_Slope'].transform([data['ST_Slope']])[0]
+    df = pd.DataFrame([data])
     
-    # Create DataFrame for input
-    processed_data = pd.DataFrame([[
-        data['Age'], data['Sex'], data['ChestPainType'], data['RestingBP'], data['Cholesterol'], data['FastingBS'], 
-        data['RestingECG'], data['MaxHR'], data['ExerciseAngina'], data['Oldpeak'], data['ST_Slope']
-    ]], columns=[
-        'Age', 'Sex', 'ChestPainType', 'RestingBP', 'Cholesterol', 'FastingBS', 
-        'RestingECG', 'MaxHR', 'ExerciseAngina', 'Oldpeak', 'ST_Slope'
-    ])
+    # Encode categorical features using label encoders
+    for column, le in label_encoders.items():
+        if column in df.columns:
+            df[column] = le.transform(df[column])
     
-    # Ensure no missing values
-    processed_data.fillna(method='ffill', inplace=True)
+    # Ensure all features are included and ordered correctly
+    processed_data = df[model_expected_features]
+    
+    # Handle any missing values if necessary
+    processed_data = processed_data.fillna(0)  # Fill missing values with a default value, e.g., 0
     
     return processed_data
 
-def predict_and_display(data):
-    # Preprocess input data
-    processed_data = preprocess_input(data)
+def predict_and_display(input_data):
+    processed_data = preprocess_input(input_data)
     
     # Predict using the loaded model
     predictions = naive_bayes_model.predict(processed_data)
     
     # Display predictions
     result = "Heart Disease" if predictions[0] == 1 else "No Heart Disease"
-    st.write(f"The predicted outcome is: {result}")
+    st.write(f"Prediction: {result}")
 
 def main():
-    st.title("Heart Disease Prediction App - Naive Bayes")
-
-    st.header("Manual Input")
-    # Manually input the features
-    age = st.number_input("Age", min_value=0, max_value=120, value=50)
-    sex = st.selectbox("Sex", options=["Male", "Female"])
-    cp = st.selectbox("Chest Pain Type", options=["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"])
-    trestbps = st.number_input("Resting Blood Pressure", min_value=80, max_value=200, value=120)
-    chol = st.number_input("Serum Cholesterol (mg/dl)", min_value=100, max_value=400, value=200)
-    fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=["True", "False"])
-    restecg = st.selectbox("Resting Electrocardiographic Results", options=["Normal", "ST-T Wave Abnormality", "Left Ventricular Hypertrophy"])
-    thalach = st.number_input("Maximum Heart Rate Achieved", min_value=60, max_value=220, value=150)
-    exang = st.selectbox("Exercise Induced Angina", options=["Yes", "No"])
-    oldpeak = st.number_input("ST Depression Induced by Exercise", min_value=0.0, max_value=6.0, step=0.1, value=1.0)
-    slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"])
-
+    st.title('Heart Disease Prediction')
+    
+    # Create input fields for user
+    age = st.number_input('Age', min_value=1, max_value=120, value=30)
+    sex = st.selectbox('Sex', ['M', 'F'])
+    chest_pain_type = st.selectbox('ChestPainType', ['ATA', 'NAP', 'TA', 'ASY'])
+    resting_bp = st.number_input('Resting Blood Pressure', min_value=0, max_value=300, value=120)
+    cholesterol = st.number_input('Cholesterol', min_value=0, max_value=600, value=200)
+    fasting_bs = st.selectbox('Fasting Blood Sugar', [0, 1])
+    resting_ecg = st.selectbox('Resting Electrocardiographic Results', ['Normal', 'ST', 'LVH'])
+    max_hr = st.number_input('Maximum Heart Rate', min_value=0, max_value=300, value=150)
+    exercise_angina = st.selectbox('Exercise Induced Angina', ['Y', 'N'])
+    oldpeak = st.number_input('Oldpeak', min_value=-10.0, max_value=10.0, value=0.0)
+    st_slope = st.selectbox('ST Slope', ['Up', 'Flat', 'Down'])
+    
+    # Collect input data into a dictionary
     input_data = {
         'Age': age,
         'Sex': sex,
-        'ChestPainType': cp,
-        'RestingBP': trestbps,
-        'Cholesterol': chol,
-        'FastingBS': fbs,
-        'RestingECG': restecg,
-        'MaxHR': thalach,
-        'ExerciseAngina': exang,
+        'ChestPainType': chest_pain_type,
+        'RestingBP': resting_bp,
+        'Cholesterol': cholesterol,
+        'FastingBS': fasting_bs,
+        'RestingECG': resting_ecg,
+        'MaxHR': max_hr,
+        'ExerciseAngina': exercise_angina,
         'Oldpeak': oldpeak,
-        'ST_Slope': slope
+        'ST_Slope': st_slope
     }
     
-    predict_and_display(input_data)
+    # Button to make prediction
+    if st.button('Predict'):
+        predict_and_display(input_data)
 
 if __name__ == '__main__':
     main()
