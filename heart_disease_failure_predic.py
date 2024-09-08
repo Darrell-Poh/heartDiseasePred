@@ -81,7 +81,9 @@ def main():
         'HeartDisease': [0]  # Dummy column; not used for prediction
     })
 
-    predict_and_display(input_data)
+    # Add a button to trigger the prediction
+    if st.button('Predict'):
+        predict_and_display(input_data)
 
 if __name__ == '__main__':
     main()
