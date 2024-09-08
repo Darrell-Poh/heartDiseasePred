@@ -58,14 +58,10 @@ def predict_and_display(data):
     predictions = naive_bayes_model.predict(processed_data)
     
     # Display predictions
-    results_df = pd.DataFrame(processed_data, columns=processed_data.columns)
-    results_df['Prediction'] = predictions
-    
-    # Show predictions in a table
     st.header("Prediction Results")
-    st.table(results_df)
+    st.write(f"The predicted outcome is: **{'Heart Disease' if predictions[0] == 1 else 'No Heart Disease'}**")
     
-    # Plot histogram of predictions
+    # Plot histogram of predictions (if desired)
     st.write("Histogram of Predictions:")
     fig, ax = plt.subplots()
     prediction_counts = pd.Series(predictions).value_counts().sort_index()
@@ -78,15 +74,43 @@ def predict_and_display(data):
 def main():
     st.title("Heart Disease Prediction App - Naive Bayes")
 
-    st.header("File Upload")
+    st.header("Manual Input")
 
-    # Upload a CSV file
-    uploaded_file = st.file_uploader("Choose a file", type=['csv'])
-    if uploaded_file is not None:
-        data = pd.read_csv(uploaded_file)
-        if not data.empty:
-            # Predict and display results
-            predict_and_display(data)
+    # Manually input the features
+    age = st.number_input("Age", min_value=0, max_value=120, value=50)
+    sex = st.selectbox("Sex", options=["Male", "Female"])
+    cp = st.selectbox("Chest Pain Type", options=["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"])
+    trestbps = st.number_input("Resting Blood Pressure", min_value=80, max_value=200, value=120)
+    chol = st.number_input("Serum Cholesterol (mg/dl)", min_value=100, max_value=400, value=200)
+    fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=["True", "False"])
+    restecg = st.selectbox("Resting Electrocardiographic Results", options=["Normal", "ST-T Wave Abnormality", "Left Ventricular Hypertrophy"])
+    thalach = st.number_input("Maximum Heart Rate Achieved", min_value=60, max_value=220, value=150)
+    exang = st.selectbox("Exercise Induced Angina", options=["Yes", "No"])
+    oldpeak = st.number_input("ST Depression Induced by Exercise", min_value=0.0, max_value=6.0, step=0.1, value=1.0)
+    slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"])
+    ca = st.number_input("Number of Major Vessels Colored by Fluoroscopy", min_value=0, max_value=3, value=0)
+    thal = st.selectbox("Thalassemia", options=["Normal", "Fixed Defect", "Reversible Defect"])
+
+    # Gather input data into a dictionary
+    input_data = {
+        'age': age,
+        'sex': sex,
+        'cp': cp,
+        'trestbps': trestbps,
+        'chol': chol,
+        'fbs': fbs,
+        'restecg': restecg,
+        'thalach': thalach,
+        'exang': exang,
+        'oldpeak': oldpeak,
+        'slope': slope,
+        'ca': ca,
+        'thal': thal
+    }
+    
+    # When the user clicks the Predict button
+    if st.button("Predict"):
+        predict_and_display(input_data)
 
 if __name__ == '__main__':
     main()
