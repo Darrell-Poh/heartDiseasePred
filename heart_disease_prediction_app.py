@@ -5,6 +5,7 @@ from joblib import load
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 # Load the pre-trained Naive Bayes model
 naive_bayes_model = load('naive_bayes_model.joblib')
 
