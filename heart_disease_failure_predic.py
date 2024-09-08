@@ -6,11 +6,11 @@ from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load the pre-trained model
+# Load the pre-trained Naive Bayes model
 naive_bayes_model = load('naive_bayes_model.joblib')
 
-# Ensure the model expects certain features
-expected_features = naive_bayes_model.feature_names_in_
+# Imputer to handle NaN values
+imputer = SimpleImputer(strategy='mean')
 
 def preprocess_input(data):
     # Convert categorical inputs to numerical values
@@ -51,21 +51,15 @@ def preprocess_input(data):
         'age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
         'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'
     ])
-
-    # Check and handle any NaN values
-    if processed_data.isnull().values.any():
-        st.warning("Some inputs were missing and have been filled with default values.")
-        imputer = SimpleImputer(strategy='mean')
-        processed_data = pd.DataFrame(imputer.fit_transform(processed_data), columns=processed_data.columns)
-
+    
+    # Impute missing values
+    processed_data = imputer.fit_transform(processed_data)
+    
     return processed_data
 
 def predict_and_display(data):
     # Preprocess the input data
     processed_data = preprocess_input(data)
-    
-    # Ensure the data contains the correct features and order
-    processed_data = processed_data.reindex(columns=expected_features)
 
     # Predict using the loaded model
     try:
