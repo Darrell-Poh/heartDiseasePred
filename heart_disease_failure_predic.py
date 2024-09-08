@@ -66,21 +66,25 @@ def predict_and_display(data):
     processed_data = processed_data.reindex(columns=expected_features)
 
     # Predict using the loaded model
-    predictions = naive_bayes_model.predict(processed_data)
+    try:
+        predictions = naive_bayes_model.predict(processed_data)
+    except ValueError as e:
+        st.error(f"Prediction failed: {e}")
+        return
     
     # Display predictions
     st.header("Prediction Results")
     st.write(f"The predicted outcome is: **{'Heart Disease' if predictions[0] == 1 else 'No Heart Disease'}**")
     
     # Plot histogram of predictions (if desired)
-    st.write("Histogram of Predictions:")
-    fig, ax = plt.subplots()
-    prediction_counts = pd.Series(predictions).value_counts().sort_index()
-    prediction_counts.plot(kind='bar', ax=ax)
-    ax.set_title("Number of Heart Disease Predictions")
-    ax.set_xlabel("Prediction")
-    ax.set_ylabel("Count")
-    st.pyplot(fig)
+    #st.write("Histogram of Predictions:")
+   # fig, ax = plt.subplots()
+    #prediction_counts = pd.Series(predictions).value_counts().sort_index()
+    #prediction_counts.plot(kind='bar', ax=ax)
+    #ax.set_title("Number of Heart Disease Predictions")
+    #ax.set_xlabel("Prediction")
+    #ax.set_ylabel("Count")
+    #st.pyplot(fig)
 
 def main():
     st.title("Heart Disease Prediction App - Naive Bayes")
