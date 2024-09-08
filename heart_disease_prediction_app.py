@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+
+file_path = "C:/Users/HP/naive_bayes_model.joblib"
+
+naive_bayes_model = load(file_path)
 # Load the pre-trained Naive Bayes model
-naive_bayes_model = load('naive_bayes_model.joblib')
+#naive_bayes_model = load('naive_bayes_model.joblib')
 
 # Main function
 def main():
