@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from joblib import load
+from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -51,6 +52,10 @@ def preprocess_input(data):
         'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'
     ])
     
+    # Handle missing values using SimpleImputer (mean strategy)
+    imputer = SimpleImputer(strategy='mean')
+    processed_data = pd.DataFrame(imputer.fit_transform(processed_data), columns=processed_data.columns)
+
     return processed_data
 
 def predict_and_display(data):
