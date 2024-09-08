@@ -15,21 +15,21 @@ def main():
 
     # Manually input the features
     st.header("Manual Input")
-
     age = st.number_input("Age", min_value=0, max_value=120, value=50)
     sex = st.selectbox("Sex", options=["Male", "Female"])
     cp = st.selectbox("Chest Pain Type", options=["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"])
-    trestbps = st.number_input("Resting Blood Pressure", min_value=80, max_value=200, value=120)
+    trestbps = st.number_input("Resting Blood Pressure",   
+ min_value=80, max_value=200, value=120)
     chol = st.number_input("Serum Cholesterol (mg/dl)", min_value=100, max_value=400, value=200)
     fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=["True", "False"])
     restecg = st.selectbox("Resting Electrocardiographic Results", options=["Normal", "ST-T Wave Abnormality", "Left Ventricular Hypertrophy"])
-    thalach = st.number_input("Maximum Heart Rate Achieved", min_value=60, max_value=220, value=150)
+    thalach = st.number_input("Maximum Heart Rate Achieved",   
+ min_value=60, max_value=220, value=150)
     exang = st.selectbox("Exercise Induced Angina", options=["Yes", "No"])
     oldpeak = st.number_input("ST Depression Induced by Exercise", min_value=0.0, max_value=6.0, step=0.1, value=1.0)
     slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"])
     ca = st.number_input("Number of Major Vessels Colored by Fluoroscopy", min_value=0, max_value=3, value=0)
     thal = st.selectbox("Thalassemia", options=["Normal", "Fixed Defect", "Reversible Defect"])
-
     # Convert categorical inputs to numerical values
     sex = 1 if sex == "Male" else 0
     cp_mapping = {"Typical Angina": 0, "Atypical Angina": 1, "Non-anginal Pain": 2, "Asymptomatic": 3}
@@ -45,11 +45,24 @@ def main():
 
     # Prepare data for prediction
     input_data = np.array([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
-    columns = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+    columns = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca',   
+ 'thal']
     input_df = pd.DataFrame(input_data, columns=columns)
 
     # Predict and display results
     predict_and_display(input_df)
+     # Check if feature names match (assuming you have a DataFrame `train_data` with the training data)
+    if not set(train_data.columns) == set(input_df.columns):
+        # If they don't match, find the missing or different features
+        missing_features = set(train_data.columns) - set(input_df.columns)
+        extra_features = set(input_df.columns) - set(train_data.columns)
+
+        st.error(f"Feature name mismatch. Missing features: {missing_features}. Extra features: {extra_features}.")
+        return
+     # Predict and display results
+    predict_and_display(input_df)
+
+
 
 # Function to predict and display results
 def predict_and_display(data):
