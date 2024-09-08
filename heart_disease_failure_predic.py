@@ -3,8 +3,6 @@ import pandas as pd
 import numpy as np
 from joblib import load
 from sklearn.impute import SimpleImputer
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Load the pre-trained Naive Bayes model
 naive_bayes_model = load('naive_bayes_model.joblib')
@@ -46,6 +44,10 @@ def preprocess_input(data):
         'RestingECG', 'MaxHR', 'ExerciseAngina', 'Oldpeak', 'ST_Slope'
     ])
     
+    # Debugging: Check the processed data
+    st.write("Processed Data for Prediction:")
+    st.write(processed_data)
+    
     # Impute missing values
     processed_data = imputer.fit_transform(processed_data)
     
@@ -62,6 +64,10 @@ def predict_and_display(data):
         st.error(f"Prediction failed: {e}")
         return
     
+    # Debugging: Check the predictions
+    st.write("Model Prediction:")
+    st.write(predictions)
+
     # Display predictions
     st.header("Prediction Results")
     st.write(f"The predicted outcome is: **{'Heart Disease' if predictions[0] == 1 else 'No Heart Disease'}**")
@@ -83,10 +89,7 @@ def main():
     exang = st.selectbox("Exercise Induced Angina", options=["Yes", "No"], index=1)
     oldpeak = st.number_input("ST Depression Induced by Exercise", min_value=0.0, max_value=6.0, step=0.1, value=1.0)
     slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"], index=0)
-    # Add these inputs if they are needed based on the features you mentioned
-    # ca = st.number_input("Number of Major Vessels Colored by Fluoroscopy", min_value=0, max_value=3, value=0)
-    # thal = st.selectbox("Thalassemia", options=["Normal", "Fixed Defect", "Reversible Defect"], index=0)
-
+    
     # Gather input data into a dictionary
     input_data = {
         'Age': age,
