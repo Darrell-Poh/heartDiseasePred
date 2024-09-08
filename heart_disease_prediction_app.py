@@ -7,7 +7,7 @@ import seaborn as sns
 
 
 
-file_path = "C:/Users/HP/naive_bayes_model.joblib"
+file_path = "naive_bayes_model.joblib"
 
 naive_bayes_model = load(file_path)
 # Load the pre-trained Naive Bayes model
