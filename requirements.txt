@@ -1,7 +1,10 @@
-matplotlib
+matplotlib====3.8.4
 seaborn
 pandas
 numpy
 streamlit
 joblib
 scikit-learn
+pillow
+pyparsing
+cairocffi
