@@ -5,7 +5,7 @@ from joblib import load
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-pip install streamlit pandas numpy joblib matplotlib seaborn
+
 # Load the pre-trained Naive Bayes model
 naive_bayes_model = load('naive_bayes_model.joblib')
 
