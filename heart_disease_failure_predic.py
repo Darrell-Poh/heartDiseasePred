@@ -8,6 +8,9 @@ import seaborn as sns
 # Load the pre-trained model
 naive_bayes_model = load('naive_bayes_model.joblib')
 
+# Get the feature names expected by the model
+expected_features = naive_bayes_model.feature_names_in_
+
 def preprocess_input(data):
     # Convert categorical inputs to numerical values
     sex = 1 if data['sex'] == "Male" else 0
@@ -54,10 +57,9 @@ def predict_and_display(data):
     # Preprocess the input data
     processed_data = preprocess_input(data)
     
-    # Verify that the features match what the model expects
-    model_expected_features = naive_bayes_model.feature_names_in_
-    processed_data = processed_data[model_expected_features]
-    
+    # Ensure the data contains the correct features and order
+    processed_data = processed_data.reindex(columns=expected_features)
+
     # Predict using the loaded model
     predictions = naive_bayes_model.predict(processed_data)
     
