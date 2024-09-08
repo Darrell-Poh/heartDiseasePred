@@ -3,10 +3,10 @@ import pandas as pd
 from joblib import load
 from sklearn.preprocessing import LabelEncoder
 
-# Load the model
+
 naive_bayes_model = load('naive_bayes_model.joblib')
 
-# Initialize label encoders (use the same ones from training)
+
 label_encoders = {
     'Sex': LabelEncoder(),
     'ChestPainType': LabelEncoder(),
@@ -16,7 +16,7 @@ label_encoders = {
 }
 
 def preprocess_input(data):
-    # Encode categorical features
+   
     data['Sex'] = label_encoders['Sex'].fit_transform(data['Sex'])
     data['ChestPainType'] = label_encoders['ChestPainType'].fit_transform(data['ChestPainType'])
     data['RestingECG'] = label_encoders['RestingECG'].fit_transform(data['RestingECG'])
@@ -27,10 +27,10 @@ def preprocess_input(data):
 def predict_and_display(input_data):
     processed_data = preprocess_input(input_data)
     
-    # Drop the dummy HeartDisease column used for input
+  
     processed_data = processed_data.drop(['HeartDisease'], axis=1, errors='ignore')
     
-    # Predict using the loaded model
+  
     predictions = naive_bayes_model.predict(processed_data)
     
     # Display predictions
@@ -42,7 +42,7 @@ def main():
 
     st.header("Manual Input")
 
-    # Manually input the features
+   
     age = st.number_input("Age", min_value=0, max_value=120, value=50)
     sex = st.selectbox("Sex", options=["Male", "Female"])
     cp = st.selectbox("Chest Pain Type", options=["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"])
@@ -55,7 +55,7 @@ def main():
     oldpeak = st.number_input("ST Depression Induced by Exercise", min_value=0.0, max_value=6.0, step=0.1, value=1.0)
     slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"])
 
-    # Convert categorical inputs to numerical values
+   
     sex = 1 if sex == "Male" else 0
     cp_mapping = {"Typical Angina": 0, "Atypical Angina": 1, "Non-anginal Pain": 2, "Asymptomatic": 3}
     cp = cp_mapping[cp]
@@ -78,10 +78,10 @@ def main():
         'ExerciseAngina': [exang],
         'Oldpeak': [oldpeak],
         'ST_Slope': [slope],
-        'HeartDisease': [0]  # Dummy column; not used for prediction
+        'HeartDisease': [0]  
     })
 
-    # Add a button to trigger the prediction
+  
     if st.button('Predict'):
         predict_and_display(input_data)
 
