@@ -65,16 +65,6 @@ def predict_and_display(data):
     # Display predictions
     st.header("Prediction Results")
     st.write(f"The predicted outcome is: **{'Heart Disease' if predictions[0] == 1 else 'No Heart Disease'}**")
-    
-    # Plot histogram of predictions
-    st.write("Histogram of Predictions:")
-    fig, ax = plt.subplots()
-    prediction_counts = pd.Series(predictions).value_counts().sort_index()
-    prediction_counts.plot(kind='bar', ax=ax)
-    ax.set_title("Number of Heart Disease Predictions")
-    ax.set_xlabel("Prediction")
-    ax.set_ylabel("Count")
-    st.pyplot(fig)
 
 def main():
     st.title("Heart Disease Prediction App - Naive Bayes")
@@ -93,8 +83,9 @@ def main():
     exang = st.selectbox("Exercise Induced Angina", options=["Yes", "No"], index=1)
     oldpeak = st.number_input("ST Depression Induced by Exercise", min_value=0.0, max_value=6.0, step=0.1, value=1.0)
     slope = st.selectbox("Slope of the Peak Exercise ST Segment", options=["Upsloping", "Flat", "Downsloping"], index=0)
-    ca = st.number_input("Number of Major Vessels Colored by Fluoroscopy", min_value=0, max_value=3, value=0)
-    thal = st.selectbox("Thalassemia", options=["Normal", "Fixed Defect", "Reversible Defect"], index=0)
+    # Add these inputs if they are needed based on the features you mentioned
+    # ca = st.number_input("Number of Major Vessels Colored by Fluoroscopy", min_value=0, max_value=3, value=0)
+    # thal = st.selectbox("Thalassemia", options=["Normal", "Fixed Defect", "Reversible Defect"], index=0)
 
     # Gather input data into a dictionary
     input_data = {
