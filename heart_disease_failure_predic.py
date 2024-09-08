@@ -14,42 +14,36 @@ imputer = SimpleImputer(strategy='mean')
 
 def preprocess_input(data):
     # Convert categorical inputs to numerical values
-    sex = 1 if data['sex'] == "Male" else 0
+    sex = 1 if data['Sex'] == "Male" else 0
     cp_mapping = {
         "Typical Angina": 0,
         "Atypical Angina": 1,
         "Non-anginal Pain": 2,
         "Asymptomatic": 3
     }
-    cp = cp_mapping[data['cp']]
-    fbs = 1 if data['fbs'] == "True" else 0
+    cp = cp_mapping[data['ChestPainType']]
+    fbs = 1 if data['FastingBS'] == "True" else 0
     restecg_mapping = {
         "Normal": 0,
         "ST-T Wave Abnormality": 1,
         "Left Ventricular Hypertrophy": 2
     }
-    restecg = restecg_mapping[data['restecg']]
-    exang = 1 if data['exang'] == "Yes" else 0
+    restecg = restecg_mapping[data['RestingECG']]
+    exang = 1 if data['ExerciseAngina'] == "Yes" else 0
     slope_mapping = {
         "Upsloping": 0,
         "Flat": 1,
         "Downsloping": 2
     }
-    slope = slope_mapping[data['slope']]
-    thal_mapping = {
-        "Normal": 1,
-        "Fixed Defect": 2,
-        "Reversible Defect": 3
-    }
-    thal = thal_mapping[data['thal']]
+    slope = slope_mapping[data['ST_Slope']]
     
-    # Return processed features as a DataFrame
+    # Create DataFrame for input
     processed_data = pd.DataFrame([[
-        data['age'], sex, cp, data['trestbps'], data['chol'], fbs, restecg,
-        data['thalach'], exang, data['oldpeak'], slope, data['ca'], thal
+        data['Age'], sex, cp, data['RestingBP'], data['Cholesterol'], fbs, restecg,
+        data['MaxHR'], exang, data['Oldpeak'], slope
     ]], columns=[
-        'age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
-        'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'
+        'Age', 'Sex', 'ChestPainType', 'RestingBP', 'Cholesterol', 'FastingBS', 
+        'RestingECG', 'MaxHR', 'ExerciseAngina', 'Oldpeak', 'ST_Slope'
     ])
     
     # Impute missing values
@@ -104,19 +98,17 @@ def main():
 
     # Gather input data into a dictionary
     input_data = {
-        'age': age,
-        'sex': sex,
-        'cp': cp,
-        'trestbps': trestbps,
-        'chol': chol,
-        'fbs': fbs,
-        'restecg': restecg,
-        'thalach': thalach,
-        'exang': exang,
-        'oldpeak': oldpeak,
-        'slope': slope,
-        'ca': ca,
-        'thal': thal
+        'Age': age,
+        'Sex': sex,
+        'ChestPainType': cp,
+        'RestingBP': trestbps,
+        'Cholesterol': chol,
+        'FastingBS': fbs,
+        'RestingECG': restecg,
+        'MaxHR': thalach,
+        'ExerciseAngina': exang,
+        'Oldpeak': oldpeak,
+        'ST_Slope': slope
     }
     
     # When the user clicks the Predict button
