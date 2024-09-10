@@ -43,7 +43,7 @@ def main():
     st.header("Manual Input")
 
    
-    age = st.number_input("Age", min_value=0, max_value=120, value=50)
+    age = st.number_input("Age", min_value=1, max_value=100, value=50)
     sex = st.selectbox("Sex", options=["Male", "Female"])
     cp = st.selectbox("Chest Pain Type", options=["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"])
     trestbps = st.number_input("Resting Blood Pressure", min_value=80, max_value=200, value=120)
