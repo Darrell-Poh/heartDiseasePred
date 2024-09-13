@@ -4,7 +4,7 @@ from joblib import load
 from sklearn.preprocessing import LabelEncoder
 
 
-naive_bayes_model = load('naive_bayes_model.joblib')
+
 
 
 label_encoders = {
